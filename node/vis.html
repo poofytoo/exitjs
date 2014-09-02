@@ -1,0 +1,47 @@
+<html>
+<body>
+  <h1>Clapper</h1>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="https://cdn.firebase.com/js/client/1.0.21/firebase.js"></script>
+  <script type="text/javascript">
+    var ref = new Firebase("https://poofytoo.firebaseio.com/exitsign");
+
+        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+        var p = 0;
+        var h;
+        var context = new AudioContext();
+        var analyser = context.createAnalyser();
+        navigator.webkitGetUserMedia({ audio: true }, function (stream) {
+            var source = context.createMediaStreamSource(stream);
+            source.connect(analyser);
+            //analyser.connect(context.destination);
+
+            setInterval(function () {
+                var array = new Uint8Array(analyser.frequencyBinCount);
+                analyser.getByteFrequencyData(array);
+                l = array.length;
+                sum = 0;
+                LOW = 10;
+                for (i in array) {
+                  if (i < LOW) {
+                    sum += array[i];
+                  }
+                }
+                h = sum / LOW;
+                if (h > 100) {
+                    console.log('clap');
+                    console.log(h);
+                    ref.set('a');
+                } else {
+                    console.log('off');
+                    ref.set('b');
+                }
+
+                
+            }, 50);
+        }, function () { });
+        /* */
+</script>
+</body>
+</html>
