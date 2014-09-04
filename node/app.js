@@ -39,6 +39,12 @@ app.get('/:id', function(req, res){
 		}
 });
 
+app.get('/say/:phrase', function(req, res) {
+	var phrase = req.params.phrase;
+	say(phrase);
+	res.send(phrase)
+})
+
 var ref = new Firebase('https://poofytoo.firebaseIO.com/exitsign');
 serialPort.on("open", function () {
 ref.on('value', function(data) {

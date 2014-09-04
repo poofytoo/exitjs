@@ -23,6 +23,14 @@ void loop() {
       delay(40);
       digitalWrite(led, LOW); 
       delay(40);
+  } else if (inChar == 'g') {
+      analogWrite(led, sweep); 
+      sweep += dir;
+      delay(10);
+      if (sweep > 255 || sweep < 0) {
+        dir *= -1;
+        sweep += dir;
+      } 
   }
 }
 
@@ -33,7 +41,15 @@ void serialEvent() {
       digitalWrite(led, HIGH); 
     } else if (inChar == 'b') {
       digitalWrite(led, LOW); 
-    } 
+    } else if (inChar == 'e') {
+      digitalWrite(led, HIGH);  
+      delay(40);
+      digitalWrite(led, LOW);
+    } else if (inChar == 'f') {
+      digitalWrite(led, HIGH);  
+      delay(200);
+      digitalWrite(led, LOW);  
+    }   
   }
 }
 
