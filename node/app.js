@@ -1,7 +1,12 @@
 var Firebase = require("firebase");
 var SerialPort = require("serialport").SerialPort
 var express = require('express');
+var exec = require('child_process').exec;
 var app = express();
+
+function say(phrase) {
+	exec('python ../talk.py "' + phrase + '"');
+}
 
 DEBUG = false
 
@@ -14,20 +19,24 @@ if (DEBUG) {
 		console.log(id);
 	}
 } else {
-	var serialPort = new SerialPort("/dev/tty.usbmodem1421", {
+	var serialPort = new SerialPort("/dev/ttyACM0", {
 		baudrate: 9600
 	});
 }
 
 app.get('/:id', function(req, res){
 		var id = req.params.id;
-		console.log(id);
-		serialPort.write(id, function(err, results) {
-			console.log('err ' + err);
-			console.log('results ' + results);
-		});
-		res.send(id);
-
+		if (req.params.id.length < 2) {
+			console.log(id);
+			serialPort.write(id, function(err, results) {
+				console.log('err ' + err);
+				console.log('results ' + results);
+			});
+			res.send(id);
+		}
+		else {
+			res.end();
+		}
 });
 
 var ref = new Firebase('https://poofytoo.firebaseIO.com/exitsign');
@@ -42,6 +51,6 @@ ref.on('value', function(data) {
 	});
 })
 
-var server = app.listen(3000, function() {
+var server = app.listen(8001, function() {
     console.log('Listening on port %d', server.address().port);
 });
