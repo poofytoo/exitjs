@@ -1,10 +1,25 @@
 var Firebase = require("firebase");
 var SerialPort = require("serialport").SerialPort
+var express = require('express');
+var app = express();
 
 var serialPort = new SerialPort("/dev/tty.usbmodem1421", {
   baudrate: 9600
 });
 
+app.get('/e', function(req, res){
+		serialPort.write('e', function(err, results) {
+			console.log('err ' + err);
+			console.log('results ' + results);
+		});
+});
+
+app.get('/f', function(req, res){
+		serialPort.write('f', function(err, results) {
+			console.log('err ' + err);
+			console.log('results ' + results);
+		});
+});
 
 var ref = new Firebase('https://poofytoo.firebaseIO.com/exitsign');
 serialPort.on("open", function () {
@@ -18,3 +33,6 @@ ref.on('value', function(data) {
 	});
 })
 
+var server = app.listen(3000, function() {
+    console.log('Listening on port %d', server.address().port);
+});
