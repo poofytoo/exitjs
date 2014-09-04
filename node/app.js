@@ -3,25 +3,31 @@ var SerialPort = require("serialport").SerialPort
 var express = require('express');
 var app = express();
 
-var serialPort = new SerialPort("/dev/tty.usbmodem1421", {
-  baudrate: 9600
-});
+DEBUG = false
 
-app.get('/e', function(req, res){
-		serialPort.write('e', function(err, results) {
+if (DEBUG) {
+	var serialPort = {};
+	serialPort.write = function(id, callback) {
+		console.log(id);
+	}
+	serialPort.on = function(id, callback) {
+		console.log(id);
+	}
+} else {
+	var serialPort = new SerialPort("/dev/tty.usbmodem1421", {
+		baudrate: 9600
+	});
+}
+
+app.get('/:id', function(req, res){
+		var id = req.params.id;
+		console.log(id);
+		serialPort.write(id, function(err, results) {
 			console.log('err ' + err);
 			console.log('results ' + results);
 		});
-		res.send('e');
+		res.send(id);
 
-});
-
-app.get('/f', function(req, res){
-		serialPort.write('f', function(err, results) {
-			console.log('err ' + err);
-			console.log('results ' + results);
-		});
-		res.send('f');
 });
 
 var ref = new Firebase('https://poofytoo.firebaseIO.com/exitsign');
