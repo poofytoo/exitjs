@@ -37,7 +37,7 @@ def onStart(name):
 	print 'starting', name
 
 def onWord(name, location, length):
-	print 'woot'
+	time.sleep(.200)
 	if length < LONG_WORD:
 		localShortPulse()
 	else:
@@ -45,7 +45,6 @@ def onWord(name, location, length):
 	print 'word', name, location, length
 
 def onEnd(name, completed):
-	localLongPulse()
 	print 'setting off'
 	print 'finishing', name, completed
 
