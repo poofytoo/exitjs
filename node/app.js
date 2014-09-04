@@ -12,6 +12,8 @@ app.get('/e', function(req, res){
 			console.log('err ' + err);
 			console.log('results ' + results);
 		});
+		res.send('e');
+
 });
 
 app.get('/f', function(req, res){
@@ -19,6 +21,7 @@ app.get('/f', function(req, res){
 			console.log('err ' + err);
 			console.log('results ' + results);
 		});
+		res.send('f');
 });
 
 var ref = new Firebase('https://poofytoo.firebaseIO.com/exitsign');
