@@ -4,8 +4,20 @@ var express = require('express');
 var exec = require('child_process').exec;
 var app = express();
 
+var asleepTimer = {};
+var signlogRef = new Firebase('https://poofytoo.firebaseio.com/exitsignlog');
+
 function say(phrase) {
-	exec('python ../talk.py "' + phrase + '"');
+	var c;
+  exec('python ../talk.py "' + phrase + '"');
+  signlogRef.child('count').transaction(function(count){
+    c = count;
+    return count+1;
+  }, function() {
+    var logmsg = {};
+    logmsg[c] = phrase;
+    signlogRef.update(logmsg);
+  });
 }
 
 DEBUG = false
@@ -39,10 +51,10 @@ app.get('/:id', function(req, res){
 		}
 });
 
-app.get('/say/:phrase', function(req, res) {
+app.get('/demand/:phrase', function(req, res) {
 	var phrase = req.params.phrase;
-	say(phrase);
-	res.send(phrase)
+	res.send(phrase);
+  say(phrase);
 })
 
 var ref = new Firebase('https://poofytoo.firebaseIO.com/exitsign');
