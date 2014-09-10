@@ -1,6 +1,6 @@
 <?php
-
-echo shell_command("git stash");
-echo shell_command("git pull --rebase");
-
+echo "go";
+echo shell_exec("git stash");
+echo shell_exec("git pull --rebase");
+echo "done";
 ?>
