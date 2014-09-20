@@ -36,7 +36,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: false }))
 
 var PORT = "/dev/ttyACM0"; //"/dev/tty.usbmodem1421";//
-var DEBUG = false;
+var DEBUG = true;
 
 var asleepTimer = {};
 var signlogRef = new Firebase('https://poofytoo.firebaseio.com/exitsignlog');
@@ -69,7 +69,7 @@ if (DEBUG) {
 }
 
 app.get('/snappy', function(req, res) {
-  res.render('interaction-cam/index');
+  res.render('snappycam');
 });
 
 app.post('/savephoto', function(req, res) {
