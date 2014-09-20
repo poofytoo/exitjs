@@ -1,10 +1,42 @@
 var Firebase = require("firebase");
+var http = require('http');
+var hbs = require('hbs');
+var bodyParser = require('body-parser')
 var SerialPort = require("serialport").SerialPort
 var express = require('express');
 var exec = require('child_process').exec;
 var app = express();
+var fs = require('fs');
+var nodemailer = require('nodemailer');
 
-var PORT = "/dev/tty.usbmodem1421";// "/dev/ttyACM0";
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'safetynigel@gmail.com',
+        pass: 'safetynigelissosafe'
+    }
+});
+
+var mailOptions = {
+    from: 'Safety Nigel <safetynigel@gmail.com>', // sender address
+    to: 'victorhung92@gmail.com', // list of receivers
+    subject: 'Oops', // Subject line
+    html: 'who is this', // html body
+    attachments: [
+        {   // utf-8 string as an attachment
+            filename: 'whoami.png',
+            path: 'public/photos/save.png'
+        },
+    ]
+};
+
+app.set('view engine', 'html');
+app.engine('html', require('hbs').__express);
+app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.urlencoded({ extended: false }))
+
+var PORT = "/dev/ttyACM0"; //"/dev/tty.usbmodem1421";//
+var DEBUG = false;
 
 var asleepTimer = {};
 var signlogRef = new Firebase('https://poofytoo.firebaseio.com/exitsignlog');
@@ -22,8 +54,6 @@ function say(phrase) {
   });
 }
 
-DEBUG = false
-
 if (DEBUG) {
 	var serialPort = {};
 	serialPort.write = function(id, callback) {
@@ -37,6 +67,25 @@ if (DEBUG) {
 		baudrate: 9600
 	});
 }
+
+app.get('/snappy', function(req, res) {
+  res.render('interaction-cam/index');
+});
+
+app.post('/savephoto', function(req, res) {
+  res.send('something happened');
+  var b64string = req.body.photo;
+  var buf = new Buffer(b64string, 'base64'); // Ta-da
+  fs.writeFile("public/photos/save.png", buf, function(err) {
+      if(err) {
+          console.log(err);
+      } else {
+          console.log("Oh, hello there!");
+          transporter.sendMail(mailOptions);
+      }
+  }); 
+
+})
 
 app.get('/:id', function(req, res){
 		var id = req.params.id;
