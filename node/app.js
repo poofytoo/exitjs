@@ -19,7 +19,7 @@ var transporter = nodemailer.createTransport({
 
 var mailOptions = {
     from: 'Safety Nigel <safetynigel@gmail.com>', // sender address
-    to: 'victorhung92@gmail.com', // list of receivers
+    to: ' the-guards-of-nigel@mit.edu', // list of receivers
     subject: 'Oops', // Subject line
     html: 'who is this', // html body
     attachments: [
