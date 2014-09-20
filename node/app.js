@@ -4,6 +4,8 @@ var express = require('express');
 var exec = require('child_process').exec;
 var app = express();
 
+var PORT = "/dev/tty.usbmodem1421";// "/dev/ttyACM0";
+
 var asleepTimer = {};
 var signlogRef = new Firebase('https://poofytoo.firebaseio.com/exitsignlog');
 
@@ -31,7 +33,7 @@ if (DEBUG) {
 		console.log(id);
 	}
 } else {
-	var serialPort = new SerialPort("/dev/ttyACM0", {
+	var serialPort = new SerialPort(PORT, {
 		baudrate: 9600
 	});
 }
@@ -59,15 +61,24 @@ app.get('/demand/:phrase', function(req, res) {
 
 var ref = new Firebase('https://poofytoo.firebaseIO.com/exitsign');
 serialPort.on("open", function () {
-ref.on('value', function(data) {
-	var v = data.val();
-		console.log(v.val);
-		serialPort.write(v.val, function(err, results) {
-			console.log('err ' + err);
-			console.log('results ' + results);
-		});
-	});
-})
+  
+  serialPort.on('data', function(data) {
+    console.log('data received: ' + data);
+    ref.child('easy').once('value', function(data) {
+      say(data.val().summon);
+      ref.child('easy').child('trigger').set(1);
+    });
+  });
+
+  ref.on('value', function(data) {
+  	var v = data.val();
+  		console.log(v.val);
+  		serialPort.write(v.val, function(err, results) {
+  			console.log('err ' + err);
+  			console.log('results ' + results);
+  		});
+  	});
+  })
 
 var server = app.listen(8001, function() {
     console.log('Listening on port %d', server.address().port);
