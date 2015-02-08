@@ -1,8 +1,5 @@
 (function() {
 
-  var API_KEY = 'eb18642b5b220484864483b8e21386c3';
-      //  ^ get your own at https://imgur.com/register/api_anon
-      //    as it is limited to 50 uploads an hour!
   var video        = document.querySelector('#video'),
       cover        = document.querySelector('#cover'),
       canvas       = document.querySelector('#canvas'),

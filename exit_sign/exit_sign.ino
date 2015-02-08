@@ -3,34 +3,31 @@ int sweep = 100;
 int dir = 1;
 char inChar;
 int val = 0;
-boolean buttonUp = true;
+int buttonHold = 0;
 
-int easyLow = 7;
-int easyHigh = 6;
 int easyRead = 5;
 
 void setup() {
   Serial.begin(9600);
   pinMode(led, OUTPUT);
-  pinMode(easyLow, OUTPUT);
-  pinMode(easyHigh, OUTPUT);
   pinMode(led, OUTPUT);
   pinMode(easyRead, INPUT);
-  
-  digitalWrite(easyLow, LOW);
-  digitalWrite(easyHigh, HIGH);
+
 }
 
 void loop() {
   val = digitalRead(easyRead);
    if (val == 0) {
-     if (buttonUp) {
-       Serial.println(0);
-       buttonUp = false;
+     if (buttonHold <= 3) {
+     buttonHold += 1;
+     }
+     if (buttonHold == 4) {
+       Serial.write('0');
+       buttonHold = 10;
        delay(1000);
      }
    } else {
-     buttonUp = true;
+     buttonHold = 0;
    }
   
   if (inChar == 'c') {
