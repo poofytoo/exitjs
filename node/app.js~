@@ -36,7 +36,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: false }))
 
 var PORT = "/dev/ttyACM0"; //"/dev/tty.usbmodem1421";//
-var DEBUG = false;
+var DEBUG = true;
 
 var asleepTimer = {};
 var signlogRef = new Firebase('https://poofytoo.firebaseio.com/exitsignlog');
@@ -104,9 +104,8 @@ app.get('/:id', function(req, res){
 
 app.get('/demand/:phrase', function(req, res) {
 	var phrase = req.params.phrase;
-	console.log(phrase)
 	res.send(phrase);
-  	say(phrase);
+  say(phrase);
 })
 
 var ref = new Firebase('https://poofytoo.firebaseIO.com/exitsign');
