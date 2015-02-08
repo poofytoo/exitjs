@@ -30,6 +30,9 @@ def setOn():
 def setOff():
   r = requests.get('http://localhost:8001/b')
 
+def setSleep():
+  r = requests.get('http://localhost:8001/g')
+
 def shortPulse():
   os.system(resetP)
   os.system(shortP)
@@ -57,6 +60,7 @@ def onWord(name, location, length):
 def onEnd(name, completed):
   print 'setting off'
   print 'finishing', name, completed
+  setSleep();
 
 '''
 for word in words:
@@ -84,7 +88,7 @@ def say(phrase):
   engine.connect('started-word', onWord)
   engine.connect('finished-utterance', onEnd)
   rate = engine.getProperty('rate')
-  engine.setProperty('rate', rate-100)
+  engine.setProperty('rate', rate-75)
   volume = engine.getProperty('volume')
   engine.setProperty('volume', volume+0.55)
   voices = engine.getProperty('voices')

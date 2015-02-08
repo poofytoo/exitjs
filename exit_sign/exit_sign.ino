@@ -51,6 +51,14 @@ void loop() {
         dir *= -1;
         sweep += dir;
       } 
+  } else if (inChar == 'h') {
+      analogWrite(led, sweep); 
+      sweep += dir;
+      delay(100);
+      if (sweep > 255 || sweep < 0) {
+        dir *= -1;
+        sweep += dir;
+      } 
   }
 }
 
