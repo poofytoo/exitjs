@@ -60,6 +60,7 @@ def onWord(name, location, length):
 def onEnd(name, completed):
   print 'setting off'
   print 'finishing', name, completed
+  setSleep();
 
 '''
 for word in words:

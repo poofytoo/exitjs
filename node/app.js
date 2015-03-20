@@ -35,7 +35,7 @@ app.engine('html', require('hbs').__express);
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: false }))
 
-var PORT = "/dev/ttyACM0"; //"/dev/tty.usbmodem1421";//
+var PORT = "/dev/ttyACM1"; //"/dev/tty.usbmodem1421";//
 var DEBUG = false;
 
 var asleepTimer = {};

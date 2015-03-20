@@ -1,4 +1,5 @@
 int led = 3;
+int ledA = 13;
 int sweep = 100;
 int dir = 1;
 char inChar;
@@ -10,7 +11,7 @@ int easyRead = 5;
 void setup() {
   Serial.begin(9600);
   pinMode(led, OUTPUT);
-  pinMode(led, OUTPUT);
+  pinMode(ledA, OUTPUT);
   pinMode(easyRead, INPUT);
 
 }
@@ -31,7 +32,8 @@ void loop() {
    }
   
   if (inChar == 'c') {
-      analogWrite(led, sweep); 
+      analogWrite(led, sweep);
+      analogWrite(ledA,sweep);
       sweep += dir;
       delay(2);
       if (sweep > 255 || sweep < 0) {
@@ -39,12 +41,15 @@ void loop() {
         sweep += dir;
       } 
   } else if (inChar == 'd') {
-      digitalWrite(led, HIGH); 
+      digitalWrite(led, HIGH);
+      digitalWrite(ledA, HIGH);
       delay(40);
-      digitalWrite(led, LOW); 
+      digitalWrite(led, LOW);
+      digitalWrite(ledA,LOW);
       delay(40);
   } else if (inChar == 'g') {
       analogWrite(led, sweep); 
+      analogWrite(ledA,sweep);
       sweep += dir;
       delay(10);
       if (sweep > 255 || sweep < 0) {
@@ -52,7 +57,8 @@ void loop() {
         sweep += dir;
       } 
   } else if (inChar == 'h') {
-      analogWrite(led, sweep); 
+      analogWrite(led, sweep);
+      analogWrite(ledA, sweep);
       sweep += dir;
       delay(100);
       if (sweep > 255 || sweep < 0) {
@@ -67,16 +73,22 @@ void serialEvent() {
     inChar = (char)Serial.read();
     if (inChar == 'a') {  
       digitalWrite(led, HIGH); 
+      digitalWrite(ledA, HIGH);
     } else if (inChar == 'b') {
       digitalWrite(led, LOW); 
+      digitalWrite(ledA, LOW);
     } else if (inChar == 'e') {
       digitalWrite(led, HIGH);  
+      digitalWrite(ledA,HIGH);
       delay(40);
       digitalWrite(led, LOW);
+      digitalWrite(ledA, LOW);
     } else if (inChar == 'f') {
       digitalWrite(led, HIGH);  
+      digitalWrite(ledA,HIGH);
       delay(200);
       digitalWrite(led, LOW);  
+      digitalWrite(ledA, LOW);
     }   
   }
 }
